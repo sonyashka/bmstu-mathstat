@@ -1,0 +1,115 @@
+\chapter{Код программы}
+
+\begin{lstlisting}[language=octave]
+function main()
+	f = fopen("X.txt", "r");
+	buf = textscan(f, "%f", 'Delimiter', ' ');
+	X = buf{1,1};
+	X = X';
+	fclose(f);
+	X = sort(X);
+	
+	M_min = X(1);
+	M_max = X(end);
+	fprintf("M_min = %d, M_max = %d\n", M_min, M_max);
+	
+	R = M_max - M_min;
+	fprintf("R = %d\n", R);
+	
+	MU = MX(X);
+	S2 = DX(X);
+	fprintf('MU = %d, S^2 = %d\n', MU, S2);
+	
+	m = floor(log2(length(X)) + 2);
+	groupOnIntervals(X, m);
+	hold on;
+	
+	sigma = sqrt(S2);
+	x_values = (M_min - 1.5):(R / 100):(M_max + 1.5);
+	Y = zeros(1, length(x_values));
+	for i = 1:length(x_values)
+		Y(i) = (1 / (sqrt(2 * pi) * sigma)) * exp(-(x_values(i) - MU) * 
+			(x_values(i) - MU) / (2 * sigma * sigma));
+	endfor
+	plot(x_values, Y), grid;
+	
+	figure;
+	
+	Y = zeros(1, length(X)+10);
+	Xd = zeros(1, length(X)+10);
+	for i = 1 : 5
+		Xd(i) = X(1) - (6-i)*0.1;
+		Xd(i+length(X)+5) = X(end) + 0.1 * i;
+	endfor
+	for i = 1 : length(X)
+		Xd(i+5) = X(i);
+	endfor
+	
+	for i = 1 : length(Xd)
+		if Xd(i) < X(1)
+			Y(i) = 0;
+		elseif Xd(i) > X(length(X))
+			Y(i) = 1;
+		else
+			Y(i) = (i - 5) / length(X);
+		endif
+	endfor
+	stairs(Xd, Y), grid;
+	
+	hold on;
+	
+	Y = zeros(1, length(x_values));
+	func = @(x) exp(-(x - MU).* (x - MU) / (2 * S2));
+	for i = 1:length(x_values)
+		Y(i) = 1 / (sigma * sqrt(2 * pi)) * 
+			integral(func, -Inf, x_values(i));
+	endfor
+	plot(x_values, Y), grid;
+end
+
+function mx = MX(X)
+	n = length(X);
+	sum = sum(X);
+	mx = sum / n;
+endfunction
+
+function dx = DX(X)
+	n = length(X);
+	MX = MX(X);
+	dx = sum((X - MX).^2) / (n - 1);
+endfunction
+
+function groupOnIntervals(X, m)
+	n = length(X);
+	delta = (X(end) - X(1)) / m;
+	intervals = zeros(2, m + 1);
+	intervals(1, 1) = X(1);
+	for i = 1:m
+		intervals(1, i + 1) = intervals(1, i) + delta; 
+	endfor
+	
+	interval_ind = 1;
+	for i = 1:n
+		if (X(i) < intervals(1, interval_ind + 1))
+			intervals(2, interval_ind) += 1;
+		elseif i != n
+			interval_ind += 1;
+			intervals(2, interval_ind) += 1;
+		endif
+	endfor
+	
+	fprintf("m = %d\n", m);
+	for i = 1:m-1
+		fprintf("[%6.2f; %6.2f) - %d\n", intervals(1,i), 
+			intervals(1, i + 1), intervals(2, i));
+	endfor
+	fprintf("[%6.2f; %6.2f] - %d\n", intervals(1, m), 
+		intervals(1, m + 1), intervals(2, m));
+	
+	for i = 1:m
+		intervals(2, i) /= (n * delta);
+	endfor
+	
+	stairs(intervals(1, :), intervals(2, :)), grid;
+endfunction
+\end{lstlisting}

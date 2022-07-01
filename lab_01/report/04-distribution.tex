@@ -1,0 +1,22 @@
+\chapter{Эмпирическая функция распределения}
+
+Пусть $\vec x = (x_1, ..., x_n)$ -- выборка из генеральной совокупности	$X$. Обозначим $n(x, \vec x)$ число элементов выборки $\vec x$, которые имеют значения меньше $x$.
+
+Эмпирической функцией распределения называют функцию $F_n : \mathbb{R} \rightarrow \mathbb{R}$, определенную как:
+\begin{equation}
+F_n (x) = \frac{n(x, \vec x)}{n}.
+\end{equation}
+
+Замечание:
+\begin{enumerate}
+	\item Обладает всеми свойствами функции распределения;
+	\item Кусочно-постоянна;
+	\item Если все элементы вектора различны, то
+	\begin{equation}
+		F_n(x) = \begin{cases}
+			0, & x \leq x_{(1)},\\
+			\displaystyle \frac{i}{n}, & x_{(i)} < x \leq x_{(i + 1)},\\
+			1, & x_{(n)} < x.
+		\end{cases}
+	\end{equation}
+\end{enumerate}

@@ -1,0 +1,34 @@
+\chapter{$\gamma$-доверительный интервал}
+
+\section{Определение}
+
+Пусть дана случайная величина $X$, закон распределения которой известен с точностью до неизвестного параметра $\theta$, и для параметра $\theta$ построен интервал $(\underline \theta (\vec X_n), \overline \theta (\vec X_n))$, где $\underline \theta (\vec x_n)$ и $\overline \theta (\vec X_n)$ -- пара статистик случайной выборки $\vec X_n$, такой что:
+\begin{equation}
+P\left\{\underline \theta (\vec X_n) < \theta < \overline \theta (\vec X_n)\right\} = \gamma.
+\end{equation}
+Тогда $(\underline \theta (\vec X_n), \overline \theta (\vec X_n))$ называется интервальной оценкой параметра $\theta$ с коэффициентом доверия $\gamma$ ($\gamma$-доверительный интервал).
+
+Для удобства также можно ввести величину $\alpha = \displaystyle \frac{1 - \gamma}{2}$ -- вероятность отклонения результата в определенном направлении.
+
+\section{Формулы для вычисления границ $\gamma$-доверительного интервала}
+
+Пусть $\vec X_n$ -- случайная выборка объема $n$ из генеральной совокупности $X$, распределенной по нормальному закону с параметрами $\mu$ и $\sigma^2$.
+\begin{enumerate}
+	\item Для мат. ожидания:
+	\begin{equation}
+		\displaystyle \underline \mu(\vec X_n) = \overline X + \frac{S(\vec X_n)}{\sqrt{n}} t_{\alpha} (n - 1),
+	\end{equation}
+	\begin{equation}
+		\displaystyle \overline \mu(\vec X_n) = \overline X + \frac{S(\vec X_n)}{\sqrt{n}} t_{1 - \alpha} (n - 1),
+	\end{equation}
+	где $\overline X$ -- точечная оценка мат. ожидания, $S(\vec X_n)$ -- точечная оценка дисперсии, $t_{1 - \alpha} (n - 1)$ -- квантиль уровня $\alpha$ распределения Стьюдента со степенями свободы $n - 1$;\newpage
+	\item Для дисперсии:
+	\begin{equation}
+		\displaystyle \underline \sigma^2(\vec X_n) = \frac{(n - 1) \cdot S^2(\vec X_n)}{\chi_{1 - \alpha}^2 (n - 1)},
+	\end{equation}
+	\begin{equation}
+		\displaystyle \overline \sigma^2(\vec X_n) = \frac{(n - 1) \cdot S^2(\vec X_n)}{\chi_{\alpha}^2 (n - 1)},
+	\end{equation}
+	где $S(\vec X_n)$ -- точечная оценка дисперсии, $\chi_{\alpha}^2 (n - 1)$ -- квантиль уровня $\alpha$ для распределения $\chi^2$ с $n - 1$ степенями свободы.
+\end{enumerate}
+
